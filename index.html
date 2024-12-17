@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -224,6 +225,7 @@
                     <option value="hi-IN">Hindi</option>
                 </select>
                 <button onclick="startSpeechToText()" aria-label="Start speech-to-text">Start Speech-to-Text</button>
+                <button onclick="stopSpeechToText()" aria-label="Stop speech-to-text">Stop Speech-to-Text</button>
                 <p id="speechOutput"></p>
             </div>
         </section>
@@ -471,23 +473,45 @@ function getRealTimeLocation() {
             window.speechSynthesis.speak(utterance);
         }
 
-        // Start Speech-to-Text for Deaf Users
-        function startSpeechToText() {
-            const language = document.getElementById("languageSelectDeaf").value;
-            const outputElement = document.getElementById("speechOutput");
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = language;
-            recognition.interimResults = false;
-            recognition.start();
+        let recognition; // Declare recognition instance globally
 
-            recognition.onresult = (event) => {
-                outputElement.textContent = event.results[0][0].transcript;
-            };
+// Start Speech-to-Text for Deaf Users
+function startSpeechToText() {
+    const language = document.getElementById("languageSelectDeaf").value;
+    const outputElement = document.getElementById("speechOutput");
 
-            recognition.onerror = (event) => {
-                outputElement.textContent = `Speech recognition error: ${event.error}`;
-            };
-        }
+    // Initialize SpeechRecognition only if not already initialized
+    if (!recognition) {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = language;
+        recognition.interimResults = true; // To get intermediate results
+        recognition.continuous = true; // To keep it running continuously
+
+        recognition.onresult = (event) => {
+            const transcript = Array.from(event.results)
+                .map(result => result[0].transcript)
+                .join('');
+            outputElement.textContent = transcript; // Update the output with the transcript
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error:", event.error);
+            outputElement.textContent = `Error: ${event.error}`;
+        };
+    }
+
+    recognition.start(); // Start recognition
+    outputElement.textContent = "Listening for speech...";
+}
+
+// Stop Speech-to-Text
+function stopSpeechToText() {
+    if (recognition) {
+        recognition.stop(); // Stop recognition manually
+        recognition = null; // Reset the recognition instance
+        document.getElementById("speechOutput").textContent = "Speech recognition stopped.";
+    }
+}
 
         // Speak Text for Blind Users
         function speakText(text, language) {
