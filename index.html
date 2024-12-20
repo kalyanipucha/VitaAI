@@ -150,7 +150,7 @@
             <div class="feature">
                 <button onclick="showImageRecognition()" aria-label="Image Recognition">Image Recognition</button>
                 <button onclick="showTextRecognition()" aria-label="Text Recognition">Text Recognition</button>
-                <button onclick="getRealTimeLocation()" aria-label="Get Real-Time Location">Get Real-Time Location</button>
+                <button onclick="getRealTimeLocation();hideOther()" aria-label="Get Real-Time Location">Get Real-Time Location</button>
                 <p id="locationResponse"></p>
             </div>
 
@@ -208,7 +208,19 @@
                 </select>
                 <textarea id="textInput" placeholder="Type your message here..." aria-label="Message input"></textarea>
                 <button onclick="convertTextToSpeech()" aria-label="Speak message">Speak Message</button>
+                <button onclick="showMessages()" aria-label="Quick Messages">Quick Messages</button>
             </div>
+            <section id="preset-messages" style="display:none;" >
+                <h2>Quick Messages</h2>
+                <button onclick="presetSpeak('Hello, how can I help you?')">Hello, how can I help you?</button>
+                <button onclick="presetSpeak('Good Morning!')">Excuse Me please</button><br><br>
+                <button onclick="presetSpeak('I need assistance.')">I need assistance.</button>
+                <button onclick="presetSpeak('Thank you!')">Thank you!</button>
+                <button onclick="presetSpeak('Excuse Me please')">Excuse Me please</button><br><br><br>
+                <div>
+                    <button style="align-self: center;background-color: #8fc5ce; " onclick="backMessages()" aria-label="Back">Back</button>
+                </div>
+            </section>
         </section>
 
         <!-- Deaf Users Section -->
@@ -255,6 +267,22 @@
         function showTextRecognition() {
             document.getElementById('textRecognitionSection').style.display = 'block';
             document.getElementById('imageRecognitionSection').style.display = 'none';
+        }
+
+        // Show Quick Messages section
+        function showMessages() {
+            document.getElementById('preset-messages').style.display = 'block';
+            document.getElementById('textRecognitionSection').style.display = 'none';
+        }
+
+        function backMessages() {
+            document.getElementById('mute').style.display = 'block';
+            document.getElementById('preset-messages').style.display = 'none';
+        }
+
+        function hideOther() {
+            document.getElementById('imageRecognitionSection').style.display = 'none';
+            document.getElementById('textRecognitionSection').style.display = 'none';
         }
 
         // Analyze Image for Blind Users
@@ -471,6 +499,11 @@ function getRealTimeLocation() {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = language;
             window.speechSynthesis.speak(utterance);
+        }
+
+        function presetSpeak(message) {
+            const speech = new SpeechSynthesisUtterance(message);
+            window.speechSynthesis.speak(speech);
         }
 
         let recognition; // Declare recognition instance globally
