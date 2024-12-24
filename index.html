@@ -196,8 +196,7 @@
                 </select>
                 <textarea id="textInput" placeholder="Type your message here..." aria-label="Message input"></textarea>
                 <button onclick="convertTextToSpeech()" aria-label="Speak message">Speak Message</button>
-                <button onclick="stopAudio()" aria-label="Stop Audio">Stop Audio</button>
-                <button onclick="showMessages()" aria-label="Quick Messages">Quick Messages</button>
+                <button onclick="showMessages(), stopAudio()" aria-label="Quick Messages">Quick Messages</button>
             </div>
             <section id="preset-messages" style="display:none;" >
                 <h2>Quick Messages</h2>
