@@ -138,9 +138,9 @@
     <div class="container">
         <!-- Main Buttons for Navigation -->
         <div class="main-buttons">
-            <button onclick="navigateTo('blind')">For Blind Users</button>
-            <button onclick="navigateTo('mute')">For Mute Users</button>
-            <button onclick="navigateTo('deaf')">For Deaf Users</button>
+            <button onclick="navigateTo('blind')" onclick="stopAudio()">For Blind Users</button>
+            <button onclick="navigateTo('mute')" onclick="stopAudio()">For Mute Users</button>
+            <button onclick="navigateTo('deaf')" onclick="stopAudio()">For Deaf Users</button>
         </div>
 
         <!-- Blind Users Section -->
@@ -152,18 +152,6 @@
                 <button onclick="showTextRecognition()" aria-label="Text Recognition">Text Recognition</button>
                 <button onclick="getRealTimeLocation();hideOther()" aria-label="Get Real-Time Location">Get Real-Time Location</button>
                 <p id="locationResponse"></p>
-            </div>
-
-            <!-- Language Selection -->
-            <div class="feature">
-                <label for="languageSelectBlind">Choose Language:</label>
-                <select id="languageSelectBlind">
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="hi">Hindi</option>
-                </select>
             </div>
 
             <!-- Image Recognition Section -->
@@ -208,6 +196,7 @@
                 </select>
                 <textarea id="textInput" placeholder="Type your message here..." aria-label="Message input"></textarea>
                 <button onclick="convertTextToSpeech()" aria-label="Speak message">Speak Message</button>
+                <button onclick="stopAudio()" aria-label="Stop Audio">Stop Audio</button>
                 <button onclick="showMessages()" aria-label="Quick Messages">Quick Messages</button>
             </div>
             <section id="preset-messages" style="display:none;" >
